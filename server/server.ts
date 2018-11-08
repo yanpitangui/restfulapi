@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import * as restify from "restify";
 import { enviroment } from "../common/enviroment";
 import { Router } from "../common/router";
-
+import {mergePatchBodyParser} from "./merge-patch.parser";
 export class Server {
 	public application: restify.Server;
 
@@ -25,6 +25,7 @@ export class Server {
 				});
 				this.application.use(restify.plugins.queryParser());
 				this.application.use(restify.plugins.bodyParser());
+				this.application.use(mergePatchBodyParser);
 				// routes
 				for (const router of routers) {
 					router.applyRoutes(this.application);

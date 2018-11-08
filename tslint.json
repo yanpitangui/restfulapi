@@ -6,7 +6,7 @@
     "trailing-comma": [true, {
       "singleline": "never",
       "multiline": {
-        "objects": "never",     // <==================
+        "objects": "never",
         "arrays": "never",
         "functions": "never",
         "typeLiterals": "ignore"
@@ -15,5 +15,9 @@
 		"object-literal-sort-keys": false
   
   },
-	"rulesDirectory": []
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": [
+        "node_modules"
+    ]}
 }
