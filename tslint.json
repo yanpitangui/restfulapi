@@ -12,7 +12,8 @@
         "typeLiterals": "ignore"
       }
     }],
-		"object-literal-sort-keys": false
+		"object-literal-sort-keys": false,
+		"no-console": false
   
   },
   "rulesDirectory": [],
