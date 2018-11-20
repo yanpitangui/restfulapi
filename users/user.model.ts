@@ -73,4 +73,4 @@ userSchema.pre("findOneAndUpdate", updateMiddleware);
 userSchema.pre("update", updateMiddleware);
 
 // problemas ao utilizar a interface IUser
-export const User = mongoose.model<any>("User", userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);
