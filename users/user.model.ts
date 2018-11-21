@@ -2,7 +2,7 @@ import * as bcrypt from "bcrypt";
 import * as mongoose from "mongoose";
 import { enviroment } from "../common/enviroment";
 import { validateCPF } from "../common/validators";
-export interface IUser extends mongoose.Document {
+export interface User extends mongoose.Document {
 	name: string;
 	email: string;
 	password: string;
@@ -58,7 +58,7 @@ const updateMiddleware = function(next) {
 };
 
 const saveMiddleware = function(next) {
-	const user: IUser = this;
+	const user: User = this;
 	if (!user.isModified("password")) {
 		next();
 	} else {
@@ -73,4 +73,4 @@ userSchema.pre("findOneAndUpdate", updateMiddleware);
 userSchema.pre("update", updateMiddleware);
 
 // problemas ao utilizar a interface IUser
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<User>("User", userSchema);

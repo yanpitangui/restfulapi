@@ -2,8 +2,8 @@ import * as mongoose from "mongoose";
 import * as restify from "restify";
 import { enviroment } from "../common/enviroment";
 import { Router } from "../common/router";
-import {mergePatchBodyParser} from "./merge-patch.parser";
 import { handleError } from "./error.handler";
+import {mergePatchBodyParser} from "./merge-patch.parser";
 export class Server {
 	public application: restify.Server;
 

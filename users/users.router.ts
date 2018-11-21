@@ -1,8 +1,8 @@
 import * as restify from "restify";
 import { ModelRouter } from "../common/model-router";
-import { IUser, User } from "./user.model";
+import { User } from "./user.model";
 
-class UsersRouter extends ModelRouter<IUser> {
+class UsersRouter extends ModelRouter<User> {
 
 	constructor() {
 		super(User);
