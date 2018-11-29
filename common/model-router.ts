@@ -3,8 +3,18 @@ import { NotFoundError } from "restify-errors";
 import { Router } from "./router";
 
 export abstract class ModelRouter<D extends mongoose.Document> extends Router {
+
+	protected basePath: string;
+
 	constructor(protected model: mongoose.Model<D>) {
 		super();
+		this.basePath = `/${model.collection.name}`;
+	}
+
+	public envelope(document: any): any {
+		const resource = Object.assign({_links: {}}, document.toJSON(document));
+		resource._links.self = `${this.basePath}/${resource._id}`;
+		return resource;
 	}
 
 	public validateId = (req, resp, next) => {
