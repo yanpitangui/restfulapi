@@ -6,15 +6,37 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
 	protected basePath: string;
 
+	protected pageSize: number = 4;
+
 	constructor(protected model: mongoose.Model<D>) {
 		super();
 		this.basePath = `/${model.collection.name}`;
 	}
 
 	public envelope(document: any): any {
-		const resource = Object.assign({_links: {}}, document.toJSON(document));
+		const resource = Object.assign({ _links: {} }, document.toJSON(document));
 		resource._links.self = `${this.basePath}/${resource._id}`;
 		return resource;
+	}
+
+	public envelopeAll(documents: any[], options: any = {}): any {
+		const resource: any = {
+			_links: {
+				self: `${options.url}`
+			},
+			items: documents
+		};
+		if (options.page && options.count && options.pageSize) {
+			if (options.page > 1) {
+				resource._links.previous = `${this.basePath}?_page=${options.page - 1}`;
+			}
+			const remaining = options.count - (options.page * options.pageSize);
+			if (remaining > 0) {
+				resource._links.next = `${this.basePath}?_page=${options.page + 1}`;
+			}
+		}
+		return resource;
+
 	}
 
 	public validateId = (req, resp, next) => {
@@ -26,7 +48,17 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 	}
 
 	public findAll = (req, resp, next) => {
-		this.model.find().then(this.renderAll(resp, next)).catch(next);
+		let page = parseInt(req.query._page || 1, 10);
+		page = page > 0 ? page : 1;
+		const skip = (page - 1) * this.pageSize;
+		this.model.count({})
+			.exec()
+			.then((count) =>
+				this.model.find()
+					.skip(skip)
+					.limit(this.pageSize)
+					.then(this.renderAll(resp, next, { page, count, pageSize: this.pageSize, url: req.url })))
+					.catch(next);
 	}
 
 	public findById = (req, resp, next) => {
