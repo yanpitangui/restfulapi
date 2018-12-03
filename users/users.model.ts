@@ -1,6 +1,6 @@
 import * as bcrypt from "bcrypt";
 import * as mongoose from "mongoose";
-import { enviroment } from "../common/enviroment";
+import { environment } from "../common/environment";
 import { validateCPF } from "../common/validators";
 export interface User extends mongoose.Document {
 	name: string;
@@ -52,7 +52,7 @@ userSchema.statics.findByEmail = function(email: string) {
 };
 
 const hashPassword = (obj, next) => {
-	bcrypt.hash(obj.password, enviroment.security.saltRounds).then((hash) => {
+	bcrypt.hash(obj.password, environment.security.saltRounds).then((hash) => {
 			obj.password = hash;
 			next();
 		}).catch(next);

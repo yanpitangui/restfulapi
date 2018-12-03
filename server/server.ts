@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 import * as restify from "restify";
-import { enviroment } from "../common/enviroment";
+import { environment } from "../common/environment";
 import { Router } from "../common/router";
 import { handleError } from "./error.handler";
 import {mergePatchBodyParser} from "./merge-patch.parser";
@@ -10,7 +10,7 @@ export class Server {
 	public initializeDb() {
 		(mongoose as any).Promise = global.Promise;
 		return mongoose.connect(
-			enviroment.db.url,
+			environment.db.url,
 			{
 				useMongoClient: true
 			}
@@ -32,7 +32,7 @@ export class Server {
 					router.applyRoutes(this.application);
 				}
 
-				this.application.listen(enviroment.server.port, () => {
+				this.application.listen(environment.server.port, () => {
 					resolve(this.application);
 				});
 
