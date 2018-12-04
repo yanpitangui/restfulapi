@@ -17,7 +17,7 @@ class ReviewRouter extends ModelRouter<Review> {
 
 	public applyRoutes(application: restify.Server) {
 		application.get(`${this.basePath}`, this.findAll);
-		application.get(`${this.basePath}/:id`, this.findById);
+		application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
 		application.post(`${this.basePath}`, this.save);
 	}
 
@@ -28,4 +28,4 @@ class ReviewRouter extends ModelRouter<Review> {
 	}
 }
 
-export const reviewRouter = new ReviewRouter();
+export const reviewsRouter = new ReviewRouter();

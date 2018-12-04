@@ -1,21 +1,7 @@
 import "jest";
 import * as request from "supertest";
-import { environment } from "../common/environment";
-import { Server } from "../server/server";
-import { User } from "./users.model";
-import { usersRouter } from "./users.router";
 
-let address: string;
-let server: Server;
-beforeAll(() => {
-	environment.db.url = process.env.DB_URL || "mongodb://localhost/meat-api-test-db";
-	environment.server.port = process.env.SERVER_PORT || 3001;
-	address = `http://localhost:${environment.server.port}`;
-	server = new Server();
-	return server.bootstrap([usersRouter])
-		.then(() => User.remove({}).exec())
-		.catch(console.error);
-});
+const address = (global as any).address;
 
 test("get /users", async () => {
 	return request(address)
@@ -74,8 +60,4 @@ test("patch /users/:id", async () => {
 			expect(response.body.password).toBeUndefined();
 		})
 		.catch(fail);
-});
-
-afterAll(() => {
-	return server.shutdown();
 });
